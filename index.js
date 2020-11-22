@@ -14,7 +14,7 @@ const server = app.listen(port,() => {
 app.use(bodyParser.json());
 
 // Global parameters
-const globalUrl = 'http://localhost:5984/todos';
+const databaseUrl = 'http://localhost:5984/todos';
 
 
 // Routes
@@ -28,13 +28,13 @@ app.get('/todos/:view', getToDos);
 
 // Posts
 app.post('/new-todo', postNewTodo);
-app.put('/:id/update', updateTodo);
+app.put('/update/:id', updateTodo);
 
 // Functions
 
 async function postNewTodo(req,res){
     try {
-        const url = `${globalUrl}`;
+        const url = `${databaseUrl}`;
         console.log(req.body);
         const { data } = await axios.post(url,req.body);
         res.send(data);
@@ -46,7 +46,7 @@ async function postNewTodo(req,res){
 
 async function getToDos( { params: {view} } ,res) {
     try {
-        const url = `${globalUrl}/_design/todos/_view/${view}`;
+        const url = `${databaseUrl}/_design/todos/_view/${view}`;
         const { data } = await axios.get(url);
         console.log(data);
         res.send(data.rows.map(obj => {
@@ -68,15 +68,28 @@ async function getToDos( { params: {view} } ,res) {
 
 // comment
 
-async function updateTodo(req,res){
+async function updateTodo ( req,res){
     try{
-        const todo = await axios.get(`${globalUrl}/${req.params.id}`);
-        const url = `${globalUrl}/${todo.data._id}?rev=${todo.data._rev}`;
-        console.log(url);
-        const axiosResponse = await axios.put(`${globalUrl}/${todo.data._id}?rev=${todo.data._rev}`,req.body);
-        res.send(axiosResponse);
+        const url = `${databaseUrl}/${req.params.id}`;
+        const todo = await axios.get(url);
+        Object.keys(req.body).forEach(
+            key => {
+                if (todo.data[key]){
+                todo.data[key] = req.body[key];
+                    }
+                else{
+                    console.log("no such parameter");
+                }
+            }
+        );
+
+       const response = await axios.put(url,todo.data);
+       console.log(response.data);
+       res.send(response.data);
+
     }
     catch (e) {
 
     }
 }
+
