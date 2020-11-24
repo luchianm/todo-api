@@ -3,6 +3,7 @@
 const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
+const joi = require('joi');
 
 // Initialization
 const app = express();
@@ -15,6 +16,58 @@ app.use(bodyParser.json());
 
 // Global parameters
 const databaseUrl = 'http://localhost:5984/todos';
+
+// Validation
+
+const todoValidation = joi.object({
+        title: joi
+            .string()
+            .alphanum()
+            .min(3)
+            .max(50)
+            .required(),
+
+        project: joi
+            .string()
+            .alphanum()
+            .min(3)
+            .max(30)
+            .required(),
+
+        description: joi
+            .string()
+            .max(250),
+
+        responsible: joi
+            .string()
+            .alphanum()
+            .min(3)
+            .max(30)
+            .required(),
+
+        hoursBooked: joi
+            .string()
+            .alphanum(),
+
+        createdAt: joi
+            .string()
+            .required(),
+
+        startedAt: joi
+            .string(),
+
+        finishedAt: joi
+            .any(),
+
+        state: joi
+            .string()
+            .required(),
+
+        deleted: joi
+            .boolean()
+            .required(),
+
+});
 
 
 // Routes
@@ -33,11 +86,20 @@ app.put('/update/:id', updateTodo);
 // Functions
 
 async function postNewTodo(req,res){
+
     try {
-        const url = `${databaseUrl}`;
-        console.log(req.body);
-        const { data } = await axios.post(url,req.body);
-        res.send(data);
+        const validation  = todoValidation.validate(req.body);
+        console.log(validation.error);
+        if (typeof (validation.error) == "undefined"){
+            const url = `${databaseUrl}`;
+            const { data } = await axios.post(url,validation);
+            console.log('validation complete');
+            res.send(data);
+        }
+        else {
+            console.log(validation.error.details);
+            res.send(validation.error.details);
+        }
     }
     catch (e) {
 
