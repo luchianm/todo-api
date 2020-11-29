@@ -1,0 +1,158 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "ToDo App",
+    "description": "Online ToDo App",
+    "license": {
+      "name": "",
+      "url": ""
+    }
+  },
+  "paths": {
+    "/user": {
+      "post": {
+        "summary": "Create user object",
+        "tags": [
+          "Create user"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "required": true,
+            "description": "Create user",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User created.",
+            "schema": {
+              "type": "object",
+              "example": {
+                "role": "new user",
+                "name": "new user"
+              }
+            }
+          },
+          "401": {
+            "description": "Credentials are wrong.",
+            "schema": {
+              "$ref": "#/definitions/401"
+            }
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "get": {
+        "summary": "User login",
+        "tags": [
+          "User sign in"
+        ],
+        "parameters": [{
+          "in": "body",
+          "name": "user",
+          "required": true,
+          "description": "User login",
+            "schema": {
+              "$ref": "#/definitions/LogIn"
+            }
+        }],
+        "responses": {
+          "200": {
+            "description": "User logged in",
+            "schema": {
+              "type": "object",
+              "example": {
+                "role": "user login",
+                "name": "user login"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "required": [
+        "email",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "ToDo": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "project": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "object"
+        },
+        "startedAt": {
+          "type": "object"
+        },
+        "finishedAt": {
+          "type": "object"
+        },
+        "state": {
+          "type": "string"
+        },
+        "deleted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "LogIn": {
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "LogOut": {
+      "properties": {
+
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Authorization",
+      "description": "Authorization section including login."
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ]
+}

@@ -4,6 +4,12 @@ const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const joi = require('joi');
+require('express-async-errors');
+const auth = require('./modules/auth');
+const error = require('./middleware/error');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 
 // Initialization
 const app = express();
@@ -13,7 +19,9 @@ const server = app.listen(port,() => {
     console.log(`Server started at ${port}`);
 });
 app.use(bodyParser.json());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+app.use('/auth', auth);
 // Global parameters
 const databaseUrl = 'http://localhost:5984/todos';
 
@@ -85,25 +93,14 @@ app.put('/update/:id', updateTodo);
 
 // Functions
 
+
+
 async function postNewTodo(req,res){
+    await todoValidation.validateAsync(req.body);
+    const url = `${databaseUrl}`;
+    const { data } = await axios.post(url,req.body);
+    res.send(data);
 
-    try {
-        const validation  = todoValidation.validate(req.body);
-        console.log(validation.error);
-        if (typeof (validation.error) == "undefined"){
-            const url = `${databaseUrl}`;
-            const { data } = await axios.post(url,validation);
-            console.log('validation complete');
-            res.send(data);
-        }
-        else {
-            console.log(validation.error.details);
-            res.send(validation.error.details);
-        }
-    }
-    catch (e) {
-
-    }
 }
 
 async function getToDos( { params: {view} } ,res) {
@@ -154,4 +151,6 @@ async function updateTodo ( req,res){
 
     }
 }
+
+app.use(error);
 
