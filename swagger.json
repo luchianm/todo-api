@@ -33,10 +33,16 @@
             "schema": {
               "type": "object",
               "example": {
-                "role": "new user",
-                "name": "new user"
+                "firstName": "John",
+                "lstName": "Tyler",
+                "email": "john@gmail.com",
+                "password": "Password",
+                "subscription": true
               }
             }
+          },
+          "400": {
+            "description": "Invalid user login"
           },
           "401": {
             "description": "Credentials are wrong.",
@@ -47,20 +53,17 @@
         }
       }
     },
-    "/user/login": {
+    "/login": {
       "get": {
         "summary": "User login",
         "tags": [
-          "User sign in"
+          "User log in"
         ],
         "parameters": [{
           "in": "body",
           "name": "user",
           "required": true,
           "description": "User login",
-            "schema": {
-              "$ref": "#/definitions/LogIn"
-            }
         }],
         "responses": {
           "200": {
@@ -80,15 +83,27 @@
   "definitions": {
     "User": {
       "required": [
+        "firstName",
+        "lastName",
         "email",
-        "password"
+        "password",
+        "subscription"
       ],
       "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
         "email": {
           "type": "string"
         },
         "password": {
           "type": "string"
+        },
+        "subscription": {
+          "type": "boolean"
         }
       }
     },
