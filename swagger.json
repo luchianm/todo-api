@@ -12,21 +12,122 @@
   "paths": {
     "/user": {
       "post": {
-        "summary": "Create user object",
-        "tags": [
-          "Create user"
-        ],
-        "parameters": [
-          {
+          "summary": "Create user object",
+          "tags": [
+            "User"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "user",
+              "required": true,
+              "description": "Create user",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User created.",
+              "schema": {
+                "type": "object",
+                "example": {
+                  "firstName": "John",
+                  "lstName": "Tyler",
+                  "email": "john@gmail.com",
+                  "password": "Password",
+                  "subscription": true
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid user login"
+            },
+            "401": {
+              "description": "Credentials are wrong."
+            }
+          }
+        }
+      },
+    "/login": {
+      "get": {
+          "summary": "User login",
+          "tags": [
+            "User"
+          ],
+          "parameters": [{
             "in": "body",
             "name": "user",
             "required": true,
-            "description": "Create user",
+            "description": "User login",
             "schema": {
-              "$ref": "#/definitions/User"
+              "type": "object",
+              "example": {
+                "email": "john@gmail.com",
+                "password": "Password"
+              }
+            }
+          }],
+          "responses": {
+            "200": {
+              "description": "User logged in",
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "john@gmail.com",
+                  "password": "Password"
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid user login"
+            },
+            "401": {
+              "description": "Credentials are wrong."
             }
           }
-        ],
+        }
+      },
+    "/logout":{
+      "get": {
+          "summary": "User logout",
+          "tags": ["User"],
+          "parameters": [{
+            "in": "body",
+            "name": "user",
+            "required": true,
+            "description": "User logout",
+            "schema": {}
+          }],
+          "responses": {
+            "200": {
+              "description": "User logged out",
+              "schema": {
+              }
+            },
+            "400": {
+              "description": "Invalid user logout"
+            },
+            "401": {
+              "description": "User credentials are wrong."
+            }
+          }
+        }
+    },
+    "/user/{userid}": {
+      "get": {
+        "summary": "Get user by id",
+        "tags": ["User"],
+        "parameters": [{
+          "in": "body",
+          "name": "user",
+          "required": true,
+          "description": "Get user by id",
+          "schema": {
+            "$ref": "#/definitions/User"
+          }
+        }],
         "responses": {
           "200": {
             "description": "User created.",
@@ -42,39 +143,188 @@
             }
           },
           "400": {
-            "description": "Invalid user login"
+            "description": "Invalid user id"
           },
           "401": {
-            "description": "Credentials are wrong.",
-            "schema": {
-              "$ref": "#/definitions/401"
-            }
+            "description": "User id not found."
           }
         }
       }
     },
-    "/login": {
-      "get": {
-        "summary": "User login",
-        "tags": [
-          "User log in"
-        ],
+    "/user/{userid}": {
+      "put": {
+        "summary": "Update user credentials",
+        "tags": ["User"],
         "parameters": [{
           "in": "body",
           "name": "user",
           "required": true,
-          "description": "User login",
+          "description": "Update user by id",
+          "schema": {
+            "$ref": "#/definitions/User"
+          }
         }],
         "responses": {
           "200": {
-            "description": "User logged in",
+            "description": "Delete user by id",
             "schema": {
               "type": "object",
               "example": {
-                "role": "user login",
-                "name": "user login"
+                "firstName": "John",
+                "lstName": "Tyler",
+                "email": "john@gmail.com",
+                "password": "Password",
+                "subscription": true
               }
             }
+          },
+          "400": {
+            "description": "Invalid user id"
+          },
+          "401": {
+            "description": "User parameter not found."
+          }
+        }
+      }
+    },
+    "/user/{userid}": {
+      "delete": {
+        "summary": "Delete user by Id",
+        "tags": ["User"],
+        "parameters": [{
+          "in": "body",
+          "name": "user",
+          "required": true,
+          "description": "Delete user by id",
+          "schema": {
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Delete user by id"
+            },
+          "400": {
+            "description": "Invalid user id for deletion"
+          },
+          "401": {
+            "description": "User parameter not found for deletion"
+          }
+        }
+      }
+    },
+    "/todo": {
+      "post": {
+        "summary": "Add new todo",
+        "tags": ["ToDo"],
+        "parameters": [{
+          "in": "body",
+          "name": "todo",
+          "required": true,
+          "description": "Add new todo",
+          "schema": {
+            "$ref": "#/definitions/ToDo"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Add new todo",
+            "schema": {
+              "type": "object",
+              "example": {
+                "title": "First todo",
+                "project": "First project",
+                "description": "Task description",
+                "createdAt": "12.04.2020",
+                "startedAt": "18.04.2020",
+                "finishedAt": "30.04.2020",
+                "state": "done",
+                "deleted": false
+              }
+            }
+          },
+          "400": {
+            "description": "Failed to create todo"
+          },
+          "401": {
+            "description": "Todo parameters not found"
+          }
+        }
+      }
+    },
+    "/todo": {
+      "put": {
+        "summary": "Update todo",
+        "tags": ["ToDo"],
+        "parameters": [{
+          "in": "body",
+          "name": "todo",
+          "required": true,
+          "description": "Update new todo",
+          "schema": {
+            "$ref": "#/definitions/ToDo"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Add new todo",
+            "schema": {
+              "type": "object",
+              "example": {
+                "title": "First todo",
+                "project": "First project",
+                "description": "Task description",
+                "createdAt": "12.04.2020",
+                "startedAt": "18.04.2020",
+                "finishedAt": "30.04.2020",
+                "state": "done",
+                "deleted": false
+              }
+            }
+          },
+          "400": {
+            "description": "Failed to create todo"
+          },
+          "401": {
+            "description": "Todo parameters not found"
+          }
+        }
+      }
+    },
+    "/todo/{todoId}": {
+      "get": {
+        "summary": "Get todo by id",
+        "tags": ["ToDo"],
+        "parameters": [{
+          "in": "body",
+          "name": "todo",
+          "required": true,
+          "description": "Get todo by id",
+          "schema": {
+            "$ref": "#/definitions/ToDo"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Get todo by Id",
+            "schema": {
+              "type": "object",
+              "example": {
+                "title": "First todo",
+                "project": "First project",
+                "description": "Task description",
+                "createdAt": "12.04.2020",
+                "startedAt": "18.04.2020",
+                "finishedAt": "30.04.2020",
+                "state": "done",
+                "deleted": false
+              }
+            }
+          },
+          "400": {
+            "description": "Failed to create todo"
+          },
+          "401": {
+            "description": "Todo parameters not found"
           }
         }
       }
@@ -136,21 +386,6 @@
         "deleted": {
           "type": "boolean"
         }
-      }
-    },
-    "LogIn": {
-      "properties": {
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        }
-      }
-    },
-    "LogOut": {
-      "properties": {
-
       }
     }
   },
