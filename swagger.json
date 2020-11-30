@@ -149,9 +149,7 @@
             "description": "User id not found."
           }
         }
-      }
-    },
-    "/user/{userid}": {
+      },
       "put": {
         "summary": "Update user credentials",
         "tags": ["User"],
@@ -185,9 +183,7 @@
             "description": "User parameter not found."
           }
         }
-      }
-    },
-    "/user/{userid}": {
+      },
       "delete": {
         "summary": "Delete user by Id",
         "tags": ["User"],
@@ -202,7 +198,7 @@
         "responses": {
           "200": {
             "description": "Delete user by id"
-            },
+          },
           "400": {
             "description": "Invalid user id for deletion"
           },
@@ -249,9 +245,7 @@
             "description": "Todo parameters not found"
           }
         }
-      }
-    },
-    "/todo": {
+      },
       "put": {
         "summary": "Update todo",
         "tags": ["ToDo"],
@@ -372,13 +366,13 @@
           "type": "string"
         },
         "createdAt": {
-          "type": "object"
+          "type": "string"
         },
         "startedAt": {
-          "type": "object"
+          "type": "string"
         },
         "finishedAt": {
-          "type": "object"
+          "type": "string"
         },
         "state": {
           "type": "string"

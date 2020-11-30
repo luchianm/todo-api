@@ -21,6 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="bfe689c3-d6fa-4752-9ee5-ae7d26193bb7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/modules/auth.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/swagger.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -76,7 +77,7 @@
       <workItem from="1605649466576" duration="11223000" />
       <workItem from="1606160840300" duration="13478000" />
       <workItem from="1606667878922" duration="1181000" />
-      <workItem from="1606684249228" duration="9192000" />
+      <workItem from="1606684249228" duration="10510000" />
     </task>
     <servers />
   </component>
